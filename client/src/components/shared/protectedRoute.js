@@ -5,15 +5,11 @@ import {
 } from 'react-router-dom'
 
 const getRoute = (Component, props) => {
-    console.log(props)
     if (props.isAuthenticated === true) {
         return <Component {...props} />
     }   
     else {
-        return <Redirect to={{
-                    pathname: '/login',
-                    state: { from: props.location }
-                }} />
+        return <Redirect to='/login' />
     }
 }
 

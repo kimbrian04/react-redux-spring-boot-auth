@@ -18,11 +18,12 @@ export function handleLogIn() {
         // validate that username and password have been entered
         if (login.usernameOrEmail.length === 0 || login.password.length === 0) {
             isValid = false
-        }
+        }        
 
         // submit if valid
         if (isValid === true) {
             let url = `http://localhost:8080/api/auth/signin`
+            let resStatus
 
             fetch(url, {
                 method: 'post',
@@ -37,11 +38,13 @@ export function handleLogIn() {
                     password: login.password
                 })
             })
-                .then(response => response.json())
+                .then(response => {
+                    resStatus = response.status
+                    return response.json()
+                })
                 .then(data => {
-                    console.log(data)
-                    switch(data.status) {
-                        case 201:
+                    switch(resStatus) {
+                        case 200:
                             localStorage.setItem(ACCESS_TOKEN, data.accessToken)
                             dispatch(hideLogInLoading())
                             dispatch(setToUserIsAuthenticated())
@@ -49,11 +52,10 @@ export function handleLogIn() {
                             break
                         default:
                             throw new Error(data.message)
-                            break;
                     }
                 })
                 .catch(error => {
-                    // console.log(error)
+                    console.log(error)
                 })
         }
     }

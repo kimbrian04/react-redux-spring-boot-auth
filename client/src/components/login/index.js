@@ -19,11 +19,9 @@ class Login extends React.Component {
     render() {
         let { formData, user } = this.props
 
-        if (user.isAuthenticated === true) {
-            const { from } = this.props.location.state || { from: { pathname: '/' }}
-            console.log(from)
+        if (user.isAuthenticated === true && formData.shouldRedirect === true) {
             return (
-                <Redirect to={from} />
+                <Redirect to="/" />
             )
         }
             

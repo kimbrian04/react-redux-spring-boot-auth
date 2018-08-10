@@ -19,7 +19,16 @@ export function getCurrentUser() {
             let apiUrl = `http://localhost:8080/api/user/me`
 
             fetch(apiUrl)
-                .then(response => response.json())
+                .then(response => {
+                    switch(response.status) {
+                        case 200:
+                        case 201:
+                            return response.json()
+                        default:
+                            throw new Error(response.message)
+                    }
+                    
+                })
                 .then(data => {
                     console.log(data)
                     switch(data.status) {
